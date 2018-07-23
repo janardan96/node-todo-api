@@ -14,6 +14,14 @@ default:"Janardan"
     age: {
         type:Number,
         default:22
+    },
+    completed:{
+        type:Boolean,
+        default:false
+    },
+    completedAt:{
+        type:String,
+        default:null
     }
 });
 
