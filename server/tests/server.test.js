@@ -1,15 +1,9 @@
 const expect = require("expect");
 const request = require("supertest");
-const {
-    ObjectID
-} = require("mongodb");
+const {ObjectID} = require("mongodb");
 
-const {
-    app
-} = require("./../server");
-const {
-    Todo
-} = require("./../models/todo");
+const {app} = require("./../server");
+const {Todo} = require("./../models/todo");
 
 const todos = [{
     _id: new ObjectID(),
@@ -96,20 +90,49 @@ describe("Get/todo/:id", () => {
             .end(done);
     });
 
-    it("should return 404 if todo is not found",(done)=>{
-        var hexID=new ObjectID().toHexString();
+    it("should return 404 if todo is not found", (done) => {
+        var hexID = new ObjectID().toHexString();
         request(app)
-        .get(`/todos/${hexID}`)
-        .expect(404)
-        .end(done)
-        
-    });
-    
-    it("should return 404 if id is incorrect",(done)=>{
-        request(app)
-        .get(`/todos/12346465`)
-        .expect(404)
-        .end(done)
+            .get(`/todos/${hexID}`)
+            .expect(404)
+            .end(done)
+
     });
 
-})
+    it("should return 404 if id is incorrect", (done) => {
+        request(app)
+            .get(`/todos/12346465`)
+            .expect(404)
+            .end(done)
+    });
+});
+
+
+describe("DELETE/todos/:id", () => {
+    it("should remove the todo", (done) => {
+        var hexID = todos[0]._id.toHexString();
+        request(app)
+            .delete(`/todos/${hexID}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todo._id).toBe(hexID);
+            })
+            .end(done);
+    });
+
+    it("should return 404 if todo is not found", (done) => {
+        var hexID = new ObjectID().toHexString();
+        request(app)
+            .get(`/todos/${hexID}`)
+            .expect(404)
+            .end(done)
+
+    });
+
+    it("should return 404 if id is incorrect", (done) => {
+        request(app)
+            .get(`/todos/12346465`)
+            .expect(404)
+            .end(done)
+    });
+});
