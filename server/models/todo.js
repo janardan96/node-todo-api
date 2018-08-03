@@ -15,6 +15,10 @@ default:"Janardan"
         type:Number,
         default:22
     },
+    _creator:{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+    },
     completed:{
         type:Boolean,
         default:false
